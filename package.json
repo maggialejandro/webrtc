@@ -1,0 +1,22 @@
+{
+  "name": "webrtc",
+  "version": "0.0.0",
+  "author": "Alejandro",
+  "description": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^3.5.1",
+    "socket.io": "^0.9.16",
+    "lodash": "^2.4.1",
+    "ejs": "^1.0.0"
+  },
+  "devDependencies": {
+    "connect-livereload": "~0.3.2",
+    "grunt": "~0.4.4",
+    "time-grunt": "~0.2.10",
+    "load-grunt-tasks": "~0.2.0",
+    "grunt-contrib-watch": "~0.6.0",
+    "grunt-open": "~0.2.3",
+    "grunt-express-server": "~0.4.13"
+  }
+}

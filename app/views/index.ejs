@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PeerJS</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/alertify/themes/alertify.core.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/alertify/themes/alertify.bootstrap.css">
+
+  <script src="//localhost:35729/livereload.js"></script>
+  <script src="http://cdn.peerjs.com/0.3/peer.js"></script>
+  <script type="text/javascript">
+    var App = App || {};
+    App.collections = { };
+
+  </script>
+</head>
+<body>
+  <br>
+  <div class="row">
+
+    <div id="panel" class="col-sm-4 col-md-4"></div>
+    <div id="form" class="col-sm-4 col-md-4"></div>
+    <div class="col-sm-4 col-md-4">
+      <div id="me" class="jumbotron">
+
+      </div>
+    </div>
+
+  </div>
+
+  <script type="text/javascript" src="bower_components/requirejs/require.js" data-main="scripts/peer"></script>
+</body>
+</html>
