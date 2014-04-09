@@ -5,7 +5,8 @@ define(["backbone"], function(Backbone) {
 
       },
       defaults: {
-        connected: false
+        image: false,
+        video: false
       }
     });
 

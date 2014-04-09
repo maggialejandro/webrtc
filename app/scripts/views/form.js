@@ -23,25 +23,52 @@ define([
         e.preventDefault();
         var file = this.$('input[type="file"]')[0].files[0];
 
-        if(!file) return alertify.error('Seleccione una imagen');
-        this.loadImage(file);
+        if(!file) return alertify.error('Seleccione una imagen o video');
+        var type = file.type.split("/")[0];
+        var format = file.type.split("/")[1];
+        console.log(format);
+
+        if(type == 'image'){
+          //chequear formato
+          this.loadImage(file);
+        }else if(type == 'video'){
+          if(format != 'mp4' && format != 'ogg' && format != 'webm')
+            return alertify.error('Wrong format (use: mp4, ogg or webm)');
+
+          this.loadVideo(file);
+        }else{
+          return alertify.error('Wrong file type')
+        }
 
         App.collections.peers.each(function(peer){
           var conns = window.peer.connections[peer.get('id')];
           for (var i = 0, ii = conns.length; i < ii; i += 1) {
             var conn = conns[i];
-            conn.send(file);
+            if (conn.label === type)
+              conn.send(file);
           }
         })
       },
       loadImage: function(file){
         var reader = new FileReader();
 
-        var imgtag = document.getElementById("image");
-        imgtag.title = file.name;
+        var imageTag = document.getElementById("image");
+        imageTag.title = file.name;
 
         reader.onload = function(event) {
-          imgtag.src = event.target.result;
+          imageTag.src = event.target.result;
+        };
+
+        reader.readAsDataURL(file);
+      },
+      loadVideo: function(file){
+        var reader = new FileReader();
+
+        var videoTag = document.getElementById("video");
+        videoTag.title = file.name;
+
+        reader.onload = function(event) {
+          videoTag.src = event.target.result;
         };
 
         reader.readAsDataURL(file);

@@ -9,39 +9,67 @@ define([
       tagName: 'tr',
       initialize: function(){
         this.template = _.template(peerTemplate);
+        this.listenTo(this.model, 'destroy', this.remove);
+        this.model.bind("change", this.render, this);
 
-        var connection = window.peer.connect(this.model.get('id'), {
-          label: 'file', reliable: true
+        var imageConnection = window.peer.connect(this.model.get('id'), {
+          label: 'image', reliable: true
+        });
+
+        var videoConnection = window.peer.connect(this.model.get('id'), {
+          label: 'video', reliable: true
         });
 
         var that = this;
-        connection.on('open', function() {
-          console.log('open');
-          that.model.set({connected: true});
+        imageConnection.on('open', function() {
+          console.log('open image con');
+          that.model.set({image: true});
           alertify.success('Conectado');
         });
 
-        connection.on('close', function() {
-          alertify.error(connection.peer + ' has left the chat.');
+        videoConnection.on('open', function() {
+          console.log('open video con');
+          that.model.set({video: true});
+          alertify.success('Conectado');
         });
 
-        connection.on('error', function(err) { alert(err); });
+        imageConnection.on('close', function() {
+          alertify.error(imageConnection.peer + ' has left the chat.');
+        });
 
-        connection.on('data', function(data){
+        videoConnection.on('close', function() {
+          alertify.error(videoConnection.peer + ' has left the chat.');
+        });
+
+        imageConnection.on('error', function(err) { alert(err); });
+        videoConnection.on('error', function(err) { alert(err); });
+
+        imageConnection.on('data', function(data){
           console.log(data);
           if (data.constructor === ArrayBuffer) {
             console.log('data');
             var dataView = new Uint8Array(data);
-            console.log(dataView);
             var dataBlob = new Blob([dataView]);
             var url = window.URL.createObjectURL(dataBlob);
             $('#image').attr('src', url);
             $('#logs').append('<div>' +
-                connection.peer + ' has sent you a <a target="_blank" href="' + url + '">file</a>.</div>');
+                imageConnection.peer + ' has sent you an <a target="_blank" href="' + url + '">image</a>.</div>');
           }
         })
 
-        this.listenTo(this.model, 'destroy', this.remove);
+        videoConnection.on('data', function(data){
+          console.log(data);
+          if (data.constructor === ArrayBuffer) {
+            console.log('data');
+            var dataView = new Uint8Array(data);
+            var dataBlob = new Blob([dataView]);
+            var url = window.URL.createObjectURL(dataBlob);
+            $('#video').attr('src', url);
+            $('#logs').append('<div>' +
+                videoConnection.peer + ' has sent you a <a target="_blank" href="' + url + '">video</a>.</div>');
+          }
+        })
+
       },
       render: function(){
         this.$el.html(this.template(this.model.toJSON()));

@@ -1,8 +1,5 @@
 <td><%= id %></td>
 <td>
-  <% if(connected){ %>
-    <span class="label label-default">Waiting...</span>
-  <% }else{ %>
-    <span class="label label-success">Connected</span>
-  <% } %>
+    <span class="label <%= image ? 'label-success' : 'label-default' %>">Image</span>
+    <span class="label <%= video ? 'label-success' : 'label-default' %>">Video</span>
 </td>
