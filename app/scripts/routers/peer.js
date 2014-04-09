@@ -14,11 +14,13 @@ define(function (require) {
 
   var PeerRouter = Backbone.Router.extend( {
       initialize: function() {
-        window.socket = io.connect('http://192.168.1.233:9000');
-        window.peer = new Peer(this.uuid, {key: 'mut74vbg60vk7qfr'});
+        window.socket = io.connect('http://192.168.1.233:9001');
         this.uuid = (Math.round(Math.random() * 999999999) + 999999999);
+        window.peer = new Peer(this.uuid, {key: 'mut74vbg60vk7qfr'});
 
-        $('#me').html('My Peer ID: <strong>'+this.uuid+'</strong>');
+        peer.on('open', function(id){
+          $('#me').html('My Peer ID: <strong>'+id+'</strong>');
+        });
 
         var that = this;
 
@@ -46,9 +48,7 @@ define(function (require) {
         });
 
         window.socket.on('peerLeft', function(data){
-          console.log(App.collections.peers);
           var model = App.collections.peers.findWhere({id: data.id});
-          console.log(model);
           App.collections.peers.remove(model);
         })
 

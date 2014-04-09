@@ -1,2 +1,8 @@
-<td></td>
 <td><%= id %></td>
+<td>
+  <% if(connected){ %>
+    <span class="label label-default">Waiting...</span>
+  <% }else{ %>
+    <span class="label label-success">Connected</span>
+  <% } %>
+</td>

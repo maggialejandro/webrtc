@@ -16,9 +16,7 @@ define([
         return this;
       },
       render: function(){
-        this.$el.html(this.template({
-          peers: App.collections.peers.toJSON()
-        }))
+        this.$el.html(this.template())
 
         return this;
       },
