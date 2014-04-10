@@ -14,9 +14,12 @@ define(function (require) {
 
   var PeerRouter = Backbone.Router.extend( {
       initialize: function() {
-        window.socket = io.connect('http://192.168.1.233:9001');
+        window.socket = io.connect('http://192.168.0.2:9001');
         this.uuid = (Math.round(Math.random() * 999999999) + 999999999);
-        window.peer = new Peer(this.uuid, {key: 'mut74vbg60vk7qfr'});
+        window.peer = new Peer(this.uuid, {
+          key: 'mut74vbg60vk7qfr',
+          debug: 3
+        });
 
         peer.on('open', function(id){
           $('#me').html('My Peer ID: <strong>'+id+'</strong>');
@@ -30,7 +33,7 @@ define(function (require) {
         window.socket.emit('getPeers');
 
         window.socket.on('peers', function(peers){
-          _.each(peers, function(id, key){
+          _.each(peers, function(id){
             var peerModel = new PeerModel();
             peerModel.set({id: id});
             App.collections.peers.add(peerModel);

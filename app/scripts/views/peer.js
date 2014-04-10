@@ -22,54 +22,50 @@ define([
 
         var that = this;
         imageConnection.on('open', function() {
-          console.log('open image con');
           that.model.set({image: true});
           alertify.success('Conectado');
+
+          this.on('data', function(data){
+            console.log(data);
+            if (data.constructor === ArrayBuffer) {
+              var dataView = new Uint8Array(data);
+              var dataBlob = new Blob([dataView]);
+              var url = window.URL.createObjectURL(dataBlob);
+              $('#image').attr('src', url);
+              $('#logs').append('<div>' +
+                  imageConnection.peer + ' has sent you an <a target="_blank" href="' + url + '">image</a>.</div>');
+            }
+          });
+
+          this.on('close', function() {
+            alertify.error(imageConnection.peer + ' has left the chat.');
+          });
+
+          this.on('error', function(err) { alert(err); });
         });
 
         videoConnection.on('open', function() {
-          console.log('open video con');
           that.model.set({video: true});
           alertify.success('Conectado');
+
+          this.on('data', function(data){
+            console.log(data);
+            if (data.constructor === ArrayBuffer) {
+              var dataView = new Uint8Array(data);
+              var dataBlob = new Blob([dataView]);
+              var url = window.URL.createObjectURL(dataBlob);
+              $('#video').attr('src', url);
+              $('#logs').append('<div>' +
+                  videoConnection.peer + ' has sent you a <a target="_blank" href="' + url + '">video</a>.</div>');
+            }
+          });
+
+          this.on('close', function() {
+            alertify.error(videoConnection.peer + ' has left the chat.');
+          });
+
+          this.on('error', function(err) { alert(err); });
         });
-
-        imageConnection.on('close', function() {
-          alertify.error(imageConnection.peer + ' has left the chat.');
-        });
-
-        videoConnection.on('close', function() {
-          alertify.error(videoConnection.peer + ' has left the chat.');
-        });
-
-        imageConnection.on('error', function(err) { alert(err); });
-        videoConnection.on('error', function(err) { alert(err); });
-
-        imageConnection.on('data', function(data){
-          console.log(data);
-          if (data.constructor === ArrayBuffer) {
-            console.log('data');
-            var dataView = new Uint8Array(data);
-            var dataBlob = new Blob([dataView]);
-            var url = window.URL.createObjectURL(dataBlob);
-            $('#image').attr('src', url);
-            $('#logs').append('<div>' +
-                imageConnection.peer + ' has sent you an <a target="_blank" href="' + url + '">image</a>.</div>');
-          }
-        })
-
-        videoConnection.on('data', function(data){
-          console.log(data);
-          if (data.constructor === ArrayBuffer) {
-            console.log('data');
-            var dataView = new Uint8Array(data);
-            var dataBlob = new Blob([dataView]);
-            var url = window.URL.createObjectURL(dataBlob);
-            $('#video').attr('src', url);
-            $('#logs').append('<div>' +
-                videoConnection.peer + ' has sent you a <a target="_blank" href="' + url + '">video</a>.</div>');
-          }
-        })
-
       },
       render: function(){
         this.$el.html(this.template(this.model.toJSON()));
