@@ -1,4 +1,4 @@
-define(function (require) {
+define(function (require, exports, module) {
 
   "use strict";
 
@@ -10,7 +10,6 @@ define(function (require) {
   var PanelView  = require("views/panel"),
       FormView   = require("views/form"),
       PeerModel  = require("models/peer");
-
 
   var PeerRouter = Backbone.Router.extend( {
       initialize: function() {
