@@ -13,7 +13,7 @@ define(function (require, exports, module) {
 
   var PeerRouter = Backbone.Router.extend( {
       initialize: function() {
-        window.socket = io.connect('http://192.168.0.2:9001');
+        window.socket = io.connect('ws://webrtc-alejandrojs.rhcloud.com:8000/');
         this.uuid = (Math.round(Math.random() * 999999999) + 999999999);
         window.peer = new Peer(this.uuid, {
           key: 'mut74vbg60vk7qfr',

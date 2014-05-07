@@ -4,6 +4,9 @@
   "author": "Alejandro",
   "description": "",
   "license": "ISC",
+  "engines": {
+    "node": ">=0.10.0"
+  },
   "dependencies": {
     "express": "~3.5.1",
     "socket.io": "~0.9.16",
